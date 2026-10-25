@@ -13,7 +13,7 @@ services:
       - key: ALLOWED_ORIGIN
         value: "*"
       - key: SCRAPER_URL
-        value: https://rozgarhub-3tc9.onrender.com/api/jobs/drafts
+        value: https://rojgarbridge-3tc9.onrender.com/api/jobs/drafts
 
   # 2. Next.js Frontend Service
   - type: web
