@@ -27,7 +27,4 @@ services:
       - key: NODE_VERSION
         value: "20"
       - key: NEXT_PUBLIC_API_URL
-        fromService:
-          type: web
-          name: rojgar-bridge-backend
-          property: host
+        value: https://rojgar-bridge-backend.onrender.com

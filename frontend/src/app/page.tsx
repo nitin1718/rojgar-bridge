@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { JobItem } from "@/types";
-import { fetchPublishedJobs } from "@/lib/api";
+import { fetchPublishedJobs, getApiBaseUrl } from "@/lib/api";
 import { INITIAL_PUBLISHED_JOBS } from "@/lib/mockData";
 import SearchAndCategoryBar from "@/components/SearchAndCategoryBar";
 import SidebarFilters from "@/components/SidebarFilters";
@@ -136,7 +136,7 @@ export default function CandidateJobsPage() {
           <div className="flex items-center gap-2">
             <span>ℹ️</span>
             <span>
-              <strong>Backend Offline:</strong> Showing pre-loaded published notices. Connects automatically to <code className="font-mono bg-amber-100 px-1 py-0.5 rounded">http://localhost:8080/api/jobs/published</code> when started.
+              <strong>Backend Offline:</strong> Showing pre-loaded published notices. Connects automatically to <code className="font-mono bg-amber-100 px-1 py-0.5 rounded">{getApiBaseUrl() ? `${getApiBaseUrl()}/api/jobs/published` : "/api/jobs/published"}</code> when started.
             </span>
           </div>
           <Link

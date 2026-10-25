@@ -5,12 +5,31 @@ import {
   RejectJobRequest,
 } from "@/types";
 
-const rawBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-const API_BASE_URL = rawBaseUrl.replace(/\/api(\/.*)?$/, "").replace(/\/+$/, "");
+export function getApiBaseUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl && envUrl.trim() !== "" && !envUrl.includes("localhost:8080")) {
+    let clean = envUrl.trim().replace(/\/api(\/.*)?$/, "").replace(/\/+$/, "");
+    if (!clean.startsWith("http://") && !clean.startsWith("https://")) {
+      clean = `https://${clean}`;
+    }
+    return clean;
+  }
+
+  // If running in browser on a deployed production domain (e.g. Render)
+  if (
+    typeof window !== "undefined" &&
+    window.location.hostname !== "localhost" &&
+    window.location.hostname !== "127.0.0.1"
+  ) {
+    return "https://rojgar-bridge-backend.onrender.com";
+  }
+
+  return envUrl || "http://localhost:8080";
+}
 
 // 8. Health Check
 export async function fetchHealth(): Promise<{ service: string; status: string }> {
-  const res = await fetch(`${API_BASE_URL}/health`, {
+  const res = await fetch(`${getApiBaseUrl()}/health`, {
     cache: "no-store",
   });
   if (!res.ok) {
@@ -31,7 +50,7 @@ export async function fetchPublishedJobs(params?: {
   if (params?.offset !== undefined) query.set("offset", params.offset.toString());
 
   const qs = query.toString() ? `?${query.toString()}` : "";
-  const res = await fetch(`${API_BASE_URL}/api/jobs/published${qs}`, {
+  const res = await fetch(`${getApiBaseUrl()}/api/jobs/published${qs}`, {
     next: { revalidate: 30 },
   });
 
@@ -53,7 +72,7 @@ export async function fetchDraftJobs(params?: {
   if (params?.offset !== undefined) query.set("offset", params.offset.toString());
 
   const qs = query.toString() ? `?${query.toString()}` : "";
-  const res = await fetch(`${API_BASE_URL}/api/jobs/drafts${qs}`, {
+  const res = await fetch(`${getApiBaseUrl()}/api/jobs/drafts${qs}`, {
     cache: "no-store",
   });
 
@@ -65,7 +84,7 @@ export async function fetchDraftJobs(params?: {
 
 // 3. Single Job / Draft Details
 export async function fetchJobById(id: number | string): Promise<JobItem> {
-  const res = await fetch(`${API_BASE_URL}/api/jobs/${id}`, {
+  const res = await fetch(`${getApiBaseUrl()}/api/jobs/${id}`, {
     cache: "no-store",
   });
 
@@ -80,7 +99,7 @@ export async function updateJob(
   id: number | string,
   payload: UpdateJobRequest
 ): Promise<{ message: string; job: JobItem }> {
-  const res = await fetch(`${API_BASE_URL}/api/jobs/${id}`, {
+  const res = await fetch(`${getApiBaseUrl()}/api/jobs/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -98,7 +117,7 @@ export async function updateJob(
 export async function publishJob(
   id: number | string
 ): Promise<{ id: number; status: string; message: string }> {
-  const res = await fetch(`${API_BASE_URL}/api/jobs/${id}/publish`, {
+  const res = await fetch(`${getApiBaseUrl()}/api/jobs/${id}/publish`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -117,7 +136,7 @@ export async function rejectJob(
   id: number | string,
   reason?: string
 ): Promise<{ id: number; status: string; message: string }> {
-  const res = await fetch(`${API_BASE_URL}/api/jobs/${id}/reject`, {
+  const res = await fetch(`${getApiBaseUrl()}/api/jobs/${id}/reject`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -133,7 +152,7 @@ export async function rejectJob(
 
 // 7. Trigger Scraping Pipeline
 export async function triggerPipeline(): Promise<{ message: string; new_count?: number }> {
-  const res = await fetch(`${API_BASE_URL}/api/pipeline/run`, {
+  const res = await fetch(`${getApiBaseUrl()}/api/pipeline/run`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
