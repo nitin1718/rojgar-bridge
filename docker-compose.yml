@@ -1,18 +1,6 @@
 version: '3.8'
 
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      - PORT=8080
-      - ALLOWED_ORIGIN=http://localhost:3000
-      - ENV=development
-    restart: unless-stopped
-
   frontend:
     build:
       context: ./frontend
@@ -20,7 +8,5 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8080/api
-    depends_on:
-      - backend
+      - NEXT_PUBLIC_API_URL=https://rojgarbridge.onrender.com
     restart: unless-stopped

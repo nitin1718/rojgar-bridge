@@ -1,6 +1,6 @@
-# 🌉 Rojgar Bridge
+# 🌉 Rojgar Bridge Frontend
 
-A modern, scalable full-stack application with a **Next.js 15 (App Router)** frontend and a high-performance **Golang (Go 1.22+)** backend.
+A modern, fast, responsive Next.js 15 (App Router) web application and Admin Curation Portal for **Rojgar Bridge**, powered by the live [RojgarBridge Core Backend](https://rojgarbridge.onrender.com).
 
 ---
 
@@ -8,36 +8,22 @@ A modern, scalable full-stack application with a **Next.js 15 (App Router)** fro
 
 ```text
 rojgar-bridge/
-├── backend/                  # Golang REST API Service
-│   ├── cmd/
-│   │   └── server/
-│   │       └── main.go       # Application entry point
-│   ├── internal/
-│   │   ├── api/
-│   │   │   ├── handlers/     # HTTP route handlers (health, jobs, etc.)
-│   │   │   ├── middleware/   # CORS, logging, auth middleware
-│   │   │   └── router.go     # HTTP routing definition
-│   │   ├── config/           # Environment config loader
-│   │   └── models/           # Data models and structs
-│   ├── Dockerfile            # Container configuration
-│   ├── go.mod                # Go module definition
-│   └── .env.example          # Environment variables template
-│
 ├── frontend/                 # Next.js 15 App Router Frontend
 │   ├── src/
 │   │   ├── app/              # Next.js App router pages & layouts
-│   │   ├── components/       # Reusable UI components
+│   │   │   ├── page.tsx      # Public Candidate Jobs Feed
+│   │   │   └── admin/        # AI Scraped Draft Notices Review Center
+│   │   ├── components/       # Reusable UI components & modals
 │   │   ├── lib/              # API fetch clients & helper utilities
 │   │   └── types/            # TypeScript interfaces
 │   ├── public/               # Static assets
 │   ├── Dockerfile            # Container configuration
 │   ├── package.json          # Node dependencies
 │   ├── tsconfig.json         # TypeScript configuration
-│   ├── tailwind.config.ts    # Tailwind styling config
-│   └── .env.example          # Environment variables template
+│   └── tailwind.config.ts    # Tailwind styling config
 │
-├── docker-compose.yml        # Multi-container orchestration (Frontend + Backend)
-├── .gitignore                # Global gitignore
+├── docker-compose.yml        # Docker service configuration
+├── render.yaml               # Render Blueprint deployment configuration
 └── README.md                 # Project documentation
 ```
 
@@ -45,34 +31,12 @@ rojgar-bridge/
 
 ## 🛠 Prerequisites
 
-To run locally without Docker, ensure you have installed:
 - **Node.js** (v20+ recommended)
-- **Go** (v1.22+ recommended)
-
-> [!TIP]
-> If you do not have Node.js or Go installed yet on Windows, you can install them via `winget` in PowerShell:
-> ```powershell
-> winget install OpenJS.NodeJS.LTS
-> winget install GoLang.Go
-> ```
+- **npm** or **pnpm**
 
 ---
 
-## 🚀 Getting Started
-
-### 1. Running the Backend (Go)
-
-```bash
-cd backend
-
-# Run the server
-go run ./cmd/server
-```
-The Go API will be available at: **`http://localhost:8080`**
-- Health Check: `GET http://localhost:8080/api/health`
-- List Jobs: `GET http://localhost:8080/api/jobs`
-
-### 2. Running the Frontend (Next.js)
+## 🚀 Running Locally
 
 ```bash
 cd frontend
@@ -80,19 +44,21 @@ cd frontend
 # Install dependencies
 npm install
 
-# Start the development server
+# Start development server
 npm run dev
 ```
-The Next.js application will be running at: **`http://localhost:3000`**
+
+Open **`http://localhost:3000`** in your browser.
+- **Candidate Portal**: `http://localhost:3000/`
+- **Admin Review Queue**: `http://localhost:3000/admin`
+
+The app connects automatically to the live backend API at **`https://rojgarbridge.onrender.com`**.
 
 ---
 
-## 🐳 Running with Docker Compose
-
-Since Docker is installed, you can spin up both services with a single command:
+## 🐳 Running with Docker
 
 ```bash
 docker compose up --build
 ```
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:8080`
+Open **`http://localhost:3000`**.

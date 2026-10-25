@@ -21,10 +21,10 @@ export function getApiBaseUrl(): string {
     window.location.hostname !== "localhost" &&
     window.location.hostname !== "127.0.0.1"
   ) {
-    return "https://rojgar-bridge-backend.onrender.com";
+    return "https://rojgarbridge.onrender.com";
   }
 
-  return envUrl || "http://localhost:8080";
+  return envUrl || "https://rojgarbridge.onrender.com";
 }
 
 // 8. Health Check

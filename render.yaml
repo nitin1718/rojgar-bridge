@@ -1,21 +1,5 @@
 services:
-  # 1. Golang Backend Service
-  - type: web
-    name: rojgar-bridge-backend
-    runtime: go
-    rootDir: backend
-    plan: free
-    buildCommand: go build -o server ./cmd/server
-    startCommand: ./server
-    envVars:
-      - key: ENV
-        value: production
-      - key: ALLOWED_ORIGIN
-        value: "*"
-      - key: SCRAPER_URL
-        value: https://rojgarbridge.onrender.com/api/jobs/drafts
-
-  # 2. Next.js Frontend Service
+  # Next.js Frontend Service
   - type: web
     name: rojgar-bridge-frontend
     runtime: node
@@ -27,4 +11,4 @@ services:
       - key: NODE_VERSION
         value: "20"
       - key: NEXT_PUBLIC_API_URL
-        value: https://rojgar-bridge-backend.onrender.com
+        value: https://rojgarbridge.onrender.com
