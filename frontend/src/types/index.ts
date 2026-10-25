@@ -64,6 +64,17 @@ export interface RejectJobRequest {
   reason?: string;
 }
 
+// Legacy Job interface for backwards compatibility
+export interface Job {
+  id?: number | string;
+  title: string;
+  company: string;
+  location: string;
+  salary: string;
+  type: string;
+  description: string;
+}
+
 // For UI Category/Filter states
 export interface FilterState {
   searchQuery: string;
